@@ -1,0 +1,14 @@
+-- LocalScript у StarterPlayerScripts
+local remote = game.ReplicatedStorage.BurnEvent
+remote.OnClientEvent:Connect(function(text)--прийняття сигналу
+	-- Цей код виконається у КОЖНОГО гравця на екрані
+	print("Оголошення для всіх: " .. text)
+	-- Наприклад, можна показати це в UI
+	-- script.Parent.ScreenGui.TextLabel.Text = text
+end)
+
+-- Script у ServerScriptService
+local remote = game.ReplicatedStorage.BurnEvent
+-- Наприклад, через 10 секунд після початку гри
+task.wait(10)
+remote:FireAllClients("Увага! Всім гравцям нараховано бонус!")-- відправка усім прогруженим гравцям
