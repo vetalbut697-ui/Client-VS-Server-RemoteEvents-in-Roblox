@@ -1,0 +1,24 @@
+--Local script у StarterPlayerScripts
+local remote = game.ReplicatedStorage:WaitForChild("BurnEvent")--підключення RemoteEvent(Міст між серверним скриптом та локальним скриптом гравця) з назвою BurnEvent до змінної
+local button = game.Workspace:WaitForChild("button") -- Знайди свою кнопку за назвою
+local clickDetector = button:WaitForChild("ClickDetector")
+local wall = game.Workspace:WaitForChild("wall")
+
+clickDetector.MouseClick:Connect(function() 
+	-- Ми просто кажемо серверу: "Натиснуто!"
+	wall:Destroy()
+	remote:FireServer()--відправка сигналу на сервер
+end)
+
+-- Script у ServerScriptService
+local remote = game.ReplicatedStorage:WaitForChild("BurnEvent")--підключення RemoteEvent(Міст між серверним скриптом та локальним скриптом гравця) з назвою BurnEvent до змінної
+remote.OnServerEvent:Connect(function(player)--отримання сигналу від гравця
+	-- Сервер сам знає, хто надіслав сигнал через аргумент 'player'
+	local character = player.Character--Підключення персонажа
+	if character and character:FindFirstChild("HumanoidRootPart") then --Якщо персонаж і його частина HumanoidRootPart (голова) прогружені
+		local fire = Instance.new("Fire")--створення ефекту фогню
+		fire.Size = 100--його розміри
+		fire.Parent = character.HumanoidRootPart--ефект вставлено в HumanoidRootPart
+		print(player.Name .. " підпалено!")
+	end
+end)
