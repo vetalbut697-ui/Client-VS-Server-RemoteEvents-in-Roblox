@@ -1,0 +1,14 @@
+-- Script (Server)
+local remote = game.ReplicatedStorage.BurnEvent
+local players = game.Players
+local player = players:WaitForChild("VETALY_BUT") -- Умовно, замість VETALY_BUT можна написати Нік акаунта гравця якому прийде повідомлення
+-- Відправляємо сигнал конкретній людині
+remote:FireClient(player, "Тобі нараховано бонус!")--Відправка сигналу конкретному гравцю
+
+-- LocalScript (Client)
+local remote = game.ReplicatedStorage.BurnEvent
+remote.OnClientEvent:Connect(function(message)-- приймання сигналу від серверу
+	-- Тут ПЛЕЄР НЕ ПРИХОДИТЬ першим аргументом, 
+	-- бо клієнт і так знає, що це він сам.
+	print("Сервер каже: " .. message)
+end)
